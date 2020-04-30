@@ -7,6 +7,8 @@ import os
 import numpy as np
 import cv2
 import matplotlib.pyplot as plt
+from skimage.data import camera
+from skimage.filters import frangi, hessian
 #command for plotting: %matplotlib inline
 
       
@@ -80,11 +82,11 @@ def histogram(filename):
     """
 
     img = cv2.imread(filename,0)
-    hist_values = cv2.calcHist(img, channels=[0],mask=None,histSize=[256],ranges=[0,256])
+    hist_values = cv2.calcHist([img], channels=[0],mask=None,histSize=[256],ranges=[0,256])
     plt.plot(hist_values)
 
     return 
            
                     
-get_1DImages(r'C:\Users\covac\Desktop\Analize-All\2.Ianuarie-All')
-histogram(r'C:\Users\covac\Desktop\Analize-All\2.Ianuarie-All\zi30_1_AC_etyn.jpg')
+#get_1DImages(r'C:\Users\covac\Desktop\Analize-All\2.Ianuarie-All')
+histogram(r'C:\Users\covac\Desktop\Analize-All\2.Ianuarie-All\zi10_1_AC_etym.jpg')
