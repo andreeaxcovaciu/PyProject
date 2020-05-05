@@ -62,11 +62,11 @@ def get_1DImages(path):
             img = cv2.imread(filesCls[k], 0)
             imgFeat1D = np.reshape(img,(img.shape[0]*img.shape[1],))
             x.append(imgFeat1D)
-            if (clsLabels[0]) : 
+            if (clsLabels[i] == clsLabels[0]) : 
                 y.append("etyn")
-            elif (clsLabels[1]) : 
+            elif (clsLabels[i] == clsLabels[1]) : 
                 y.append("etym")
-            elif (clsLabels[2]) : 
+            elif (clsLabels[i] == clsLabels[2]) : 
                 y.append("etyo")  
   
     y = np.asarray(y)
