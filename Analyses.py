@@ -36,25 +36,6 @@ def get_1DImages(path):
     x = []
     y = []
     clsLabels = np.array(['etyn','etym', 'etyo'])
-
-    # dirFiles = os.listdir(path)      #all filenames of that particular dir -- image
-    
-    # for k in range(0,len(dirFiles)):
-          
-    #         fileName = path+"\\"+dirFiles[k]
-            
-    #         if (os.path.isfile(fileName)):
-    #             print(fileName)
-    #             img = cv2.imread(fileName,0)
-    #             imgFeat1D = np.reshape(img,(img.shape[0]*img.shape[1],))
-    #             x.append(imgFeat1D)
-               
-    #             if (fileName.endswith("etyn.jpg")):
-    #                 y.append("etyn")
-    #             elif (fileName.endswith("etym.jpg")):
-    #                 y.append("etym")
-    #             elif (fileName.endswith("etyo.jpg")):
-    #                 y.append("etyo")
     
     for i in range(0,len(clsLabels)):
         filesCls = glob.glob('D:/Licenta/Analize-All/*/*'+ clsLabels[i]+".jpg")
