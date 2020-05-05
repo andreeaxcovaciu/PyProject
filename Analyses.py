@@ -2,6 +2,7 @@
 """
 @author: covaciu
 """
+
 import os
 import numpy as np
 import cv2
@@ -31,33 +32,48 @@ def get_1DImages(path):
     and the images' labels
 
     """
+    import glob
     x = []
     y = []
+    clsLabels = np.array(['etyn','etym', 'etyo'])
 
-    dirFiles = os.listdir(path)      #all filenames of that particular dir -- image
+    # dirFiles = os.listdir(path)      #all filenames of that particular dir -- image
     
-    for k in range(0,len(dirFiles)):
+    # for k in range(0,len(dirFiles)):
           
-            fileName = path+"\\"+dirFiles[k]
+    #         fileName = path+"\\"+dirFiles[k]
             
-            if (os.path.isfile(fileName)):
+    #         if (os.path.isfile(fileName)):
+    #             print(fileName)
+    #             img = cv2.imread(fileName,0)
+    #             imgFeat1D = np.reshape(img,(img.shape[0]*img.shape[1],))
+    #             x.append(imgFeat1D)
                
-                img = cv2.imread(fileName,0)
-                imgFeat1D = np.reshape(img,(img.shape[0]*img.shape[1],))
-                x.append(imgFeat1D)
-               
-                if (fileName.endswith("etyn.jpg")):
-                    y.append("etyn")
-                elif (fileName.endswith("etym.jpg")):
-                    y.append("etym")
-                elif (fileName.endswith("etyo.jpg")):
-                    y.append("etyo")
-
+    #             if (fileName.endswith("etyn.jpg")):
+    #                 y.append("etyn")
+    #             elif (fileName.endswith("etym.jpg")):
+    #                 y.append("etym")
+    #             elif (fileName.endswith("etyo.jpg")):
+    #                 y.append("etyo")
+    
+    for i in range(0,len(clsLabels)):
+        filesCls = glob.glob('D:/Licenta/Analize-All/*/*'+ clsLabels[i]+".jpg")
+        for k in range (0, len(filesCls)):
+            img = cv2.imread(filesCls[k], 0)
+            imgFeat1D = np.reshape(img,(img.shape[0]*img.shape[1],))
+            x.append(imgFeat1D)
+            if (clsLabels[0]) : 
+                y.append("etyn")
+            elif (clsLabels[1]) : 
+                y.append("etym")
+            elif (clsLabels[2]) : 
+                y.append("etyo")  
+  
     y = np.asarray(y)
     X = np.asarray(x)
     
-#    print (X)
-#    print (y)
+    print (X)
+    print (y)
     print('X.shape: ',X.shape,  ' y.shape: ',y.shape)
     return [X, y]
 
@@ -84,24 +100,12 @@ def histogram(filename):
     plt.plot(hist_values)
 
     return 
-
-#import glob
 # In[1] - Prgram principal            
-orgPath = r'D:\Licenta\Analize-All\2.Ianuarie-All'   
-clsLabels = {'etyn','etym', 'etyo'}        
-
-# dirFiles = os.listdir(orgPath)
-
-# dirsPath = orgPath + dirFiles[0]
-
-# imgsFile = os.listdir(dirsPath)
-
-
-     
+orgPath = r'D:\Licenta\Analize-All\5.Aprilie-All'  
+    
 [X, y] = get_1DImages(orgPath)
-# histogram(r'C:\Users\covac\Desktop\Analize-All\2.Ianuarie-All\zi10_1_AC_etym.jpg')
 
-
+"""
 from sklearn.model_selection import train_test_split
 # divizare date in set de antrenare si set de test
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size = 0.5, random_state = 0)
@@ -145,3 +149,4 @@ filename = 'finalized_model.sav'
 loaded_model = pickle.load(open(filename, 'rb'))
 result = loaded_model.score(X_test, y_test)
 print(result)
+"""
