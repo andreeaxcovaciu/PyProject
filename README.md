@@ -1,6 +1,6 @@
 # PyProject
 ## Introduction
-A lot of women worldwide are infertility problems or undesired pregnancies. The number of abortions is really high so in order to prevent such a situation, this work is suggesting a useful way in birth control. Monitoring the level of estrogen in woman’s body can say a lot of their menstrual cycle. The method proposed is the usage of saliva analysis.
+A lot of women worldwide have infertility problems or undesired pregnancies. The number of abortions is really high so in order to prevent such a situation, this work is suggesting a useful way in birth control. Monitoring the level of estrogen in woman’s body can say a lot of their menstrual cycle. The method proposed is the usage of saliva analysis.
 Furthermore, I will present my approach according to the problem.
 ## Implementation
 The idea behind the project is to classify images based on saliva images. That is because you can detect the level of estrogen in saliva crystallization. So it should appear a ferning pattern when it's a high level of estrogen. You can see in the image below: 1st - no ferning image, 2nd - semi-ferning images, 3rd - full ferning images. I will clasify the images from my database using k-means (for feature extraction) and support vector machine.
@@ -20,10 +20,10 @@ In the bellow images you can see: (1) Original Image; (2) Binar image; (3) Frang
 ![samples2](images/img2.jpg)
 
 ## Following the Bag-of-Words 
-### K-Means Algorithm and vocabulary construction
-### Words Assignemnt => Set of codewords
-### Computing Histogram
-### Image Classificatuin using Support Vector Machine
+### - K-Means Algorithm and vocabulary construction
+### - Words Assignemnt => Set of codewords
+### - Computing Histogram
+### - Image Classificatuin using Support Vector Machine
 ## Results
 ### Training
 In the test part, the accuracy was really high, about 97%.You can see in the confusion matrix below.
