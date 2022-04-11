@@ -30,11 +30,11 @@ for i in range(0, line):
 plt.show();
 
 # In[1] Descriptori de textura - ferigarea 
+
 # Extragerea vectorului de trasaturi
 import cv2
 from skimage.filters import frangi
 from pyimagesearch.localbinarypatterns import LocalBinaryPatterns
-#from PIL import Image
 
 desc = LocalBinaryPatterns(26, 8)
 
@@ -119,9 +119,9 @@ if (savePatchesGroups == True):
         cv2.imwrite(dirname, Xpa[i, :, :])
         # claseVals.append(ypaft_labels[ypaft_labels==ypaft_labels[i]].shape)
     # print(claseVals)
+    
 # In[3] Antrenare BoW pe date a caror eticheta o cunoastem 
-from sklearn.feature_extraction.image import extract_patches_2d
-# save np.load
+
 
 X = np.load(r'D:\_WorkTmpFilesTst\Disertatie\set_29_03_X.npy', allow_pickle=True)
 y = np.load(r'D:\_WorkTmpFilesTst\Disertatie\set_29_03_y.npy', allow_pickle=True)
@@ -210,9 +210,6 @@ print( " \n ------ Evaluare performante clasificator ------ ")
 print(' \n   Classification report - train dataset : \n\n', classification_report(y_train_svm, y_train_pred))
 
 
-#print(metrics.classification_report(cm_train, y_ia_pred))
-
-
 # In[5]
 
 Xia = X_test
@@ -232,6 +229,7 @@ for i in range (Xia.shape[0]):
     Xiasvm[i] = hisy[0]
 
 print ('Predictie clasa ...')
+
 # predictie pe setul de test
 
 y_ia_pred = model_svm.predict(Xiasvm)
@@ -250,7 +248,6 @@ print(' \n   Classification report - test dataset : \n\n', classification_report
 
 
 import pickle
-
 
 print('Salvare imagini dupa clasa: ...')
 
