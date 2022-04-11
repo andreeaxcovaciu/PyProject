@@ -23,7 +23,7 @@ In the bellow images you can see: (1) Original Image; (2) Binar image; (3) Frang
 ### - K-Means Algorithm and vocabulary construction
 ### - Words Assignemnt => Set of codewords
 ### - Computing Histogram
-### - Image Classificatuin using Support Vector Machine
+### - Image Classification using Support Vector Machine
 ## Results
 ### Training
 In the test part, the accuracy was really high, about 97%.You can see in the confusion matrix below.
