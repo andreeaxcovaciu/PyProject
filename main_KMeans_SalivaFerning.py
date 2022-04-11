@@ -1,61 +1,5 @@
-# -*- coding: utf-8 -*-
-# import seaborn as sns; 
 import matplotlib as plt
-# def ImageIllustrationPredictionResults(X, y, y_pred, cls_labels): 
-#     nrCls = len(cls_labels)
-#     pozErr = (y != y_pred) # errors in label prediction
-#     X_err = X [pozErr]
-#     y_err_or = y[pozErr]
-#     y_err_pr = y_pred[pozErr]
-#     print("Set date/imagini eronate: ", X_err.shape)
-    
-#     lines = 4
-#     cols = max(nrCls, 10)
-#     fig = plt.figure(figsize=(cols*1.6,lines*2.2))
-#     for i in range(0, min(lines*cols, X_err.shape[0])):
-#         fig.add_subplot(lines, cols, i+1); plt.imshow(X_err[i], cmap=plt.cm.bone); 
-#         plt.title([str(y_err_or[i]) + '/ p:' + str(y_err_pr[i])]);
-#     plt.show()
-
-
-# def ImagePlotConfusionMatrix(cm, classes,
-#                           normalize=False,
-#                           title='Confusion matrix',
-#                           cmap=plt.cm.Blues):
-#   """
-#   This function prints and plots the confusion matrix.
-#   Normalization can be applied by setting `normalize=True`.
-#   """
-#   if normalize:
-#       cm = cm.astype('float') / cm.sum(axis=1)[:, np.newaxis]
-#       print("Normalized confusion matrix")
-#   else:
-#       print('Confusion matrix, without normalization')
-
-#   # print(cm)
-
-#   plt.imshow(cm, interpolation='nearest', cmap=cmap)
-#   plt.title(title)
-#   plt.colorbar()
-#   tick_marks = np.arange(len(classes))
-#   plt.xticks(tick_marks, classes, rotation=45)
-#   plt.yticks(tick_marks, classes)
-
-#   fmt = '.2f' if normalize else 'd'
-#   thresh = cm.max() / 2.
-#   for i, j in itertools.product(range(cm.shape[0]), range(cm.shape[1])):
-#       plt.text(j, i, format(cm[i, j], fmt),
-#                horizontalalignment="center",
-#                color="white" if cm[i, j] > thresh else "black")
-
-#   plt.tight_layout()
-#   plt.ylabel('True label')
-#   plt.xlabel('Predicted label')
-#   plt.show()
-
-
 import itertools
-# firstPath = "D:\_WorkTmpFilesTst\"
 firstPath = "D:/_WorkTmpFilesTst/"
 # -----------------------------------------------------------------------------------
 # In[0] Incarcare baza de date 
@@ -68,7 +12,7 @@ import time
 start_time = time.time()
 
 # Vectorul de trasaturi Xpa - patch-uri extrase din tot setul de date
-Xpa = np.load('npyData/07_07/set_all_patches_X.npy')
+Xpa = np.load(r'D:\_WorkTmpFilesTst\Disertatie\set_29_03_TOATE.npy')
 
 print(' Setul de patche-uri incarcat, Xpa.shape ', Xpa.shape)
 
@@ -85,7 +29,7 @@ for i in range(0, line):
         plt.imshow(Xpa[rdmImg], cmap='gray'); #plt.title(str([rdmImg]))
 plt.show();
 
-# In[] Descriptori de textura - ferigarea 
+# In[1] Descriptori de textura - ferigarea 
 # Extragerea vectorului de trasaturi
 import cv2
 from skimage.filters import frangi
@@ -98,16 +42,14 @@ from sklearn.cluster import KMeans
 md_km_q = KMeans(n_clusters = 4, random_state=0)
 
 
-
-# centers_kmeans = model_kmeans.cluster_centers_ # centrele claselor
-
-
 def dataFeature(img, desc, af):
     
+    #applying binarization
     ret,img_bn = cv2.threshold(img,0,255,cv2.THRESH_BINARY+cv2.THRESH_OTSU)
 
     img_fr = frangi(img_bn.reshape(img.shape[0], img.shape[1]), scale_step = 1, gamma = 1.5, beta = 1.5) #frangi filter
-    img_fr_n = 255 - ( img_fr*255/0.05).astype(np.uint8)
+
+    img_fr_n = 255 * (img_fr -np.min(img_fr))/(np.max(img_fr) - np.min(img_fr))
     
     
     if (af == True):
@@ -133,19 +75,25 @@ for i in range(0, Xpa.shape[0]): #X.shape[0]
 
 Xpaft = img_fts 
 print('  - Interval original: [', Xpaft[0].min(), ' ; ', Xpaft[0].max(),']')
-# In[3] Aplicare KMeans - creare model, antrenare pe setul de date, extragere centre clase
+# In[2] Aplicare KMeans - creare model, antrenare pe setul de date, extragere centre clase
 
-
+#setting the number classes
 nrClase = 60
+
+#calling the KMeans function
 model_kmeans = KMeans(n_clusters = nrClase, random_state=0)
 
 ypaft_labels = model_kmeans.fit_predict(Xpaft)
 
 centers_kmeans = model_kmeans.cluster_centers_ # centrele claselor
-np.save("npyData/07_07/centers_kmeans_Xpa_Andreea.npy", centers_kmeans)
+
+#saving the centroids
+np.save("npyData/07_07/centers_kmeans_Xpa_Andreea_k_Disertatie.npy", centers_kmeans)
 
 print(' KMeans - cluster centers')
 print('     - kmeans.cluster_centers_.shape', model_kmeans.cluster_centers_.shape)
+
+#saving the extracted patches in their classes
 savePatchesGroups = True # daca dorim sa salvam pache-urile dupa grupare KMeans
 if (savePatchesGroups == True):
     # gruparea imaginilor dupa clasele alocate
@@ -171,15 +119,14 @@ if (savePatchesGroups == True):
         cv2.imwrite(dirname, Xpa[i, :, :])
         # claseVals.append(ypaft_labels[ypaft_labels==ypaft_labels[i]].shape)
     # print(claseVals)
-# In[] Antrenare BoW pe date a caror eticheta o cunoastem 
+# In[3] Antrenare BoW pe date a caror eticheta o cunoastem 
 from sklearn.feature_extraction.image import extract_patches_2d
 # save np.load
 
-X = np.load('npyData/07_07/set_analize_all_labeled_X.npy', allow_pickle=True)
-y = np.load('npyData/07_07/set_analize_all_labeled_y.npy', allow_pickle=True)
+X = np.load(r'D:\_WorkTmpFilesTst\Disertatie\set_29_03_X.npy', allow_pickle=True)
+y = np.load(r'D:\_WorkTmpFilesTst\Disertatie\set_29_03_y.npy', allow_pickle=True)
 
-X = X[y!=1]
-y = y[y!=1]
+
 
 from sklearn.model_selection import train_test_split
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size = 0.3, random_state = 0)
@@ -187,8 +134,6 @@ X_train, X_test, y_train, y_test = train_test_split(X, y, test_size = 0.3, rando
 Xlb = X_train
 ylb = y_train
 
-#Xlb = np.load(r'D:\_WorkTmpFilesTst\Toate/set_X2D_1_256_3clase_Toate.npy')
-#ylb = np.load(r'D:\_WorkTmpFilesTst\Toate/set_y2D_1_256_3clase_Toate.npy')
 
 
 from sklearn.neighbors import KNeighborsClassifier
@@ -222,8 +167,9 @@ for i in range (Xlb.shape[0]):
     opt_par_svm = False; # True or False
 
 
-# In[]
+# In[4]
 
+#implementing SVM
 from sklearn.model_selection import GridSearchCV
 
 from sklearn.svm import SVC
@@ -267,11 +213,8 @@ print(' \n   Classification report - train dataset : \n\n', classification_repor
 #print(metrics.classification_report(cm_train, y_ia_pred))
 
 
-# In[4]
-#Xia = np.load('npyData/set_ALL_X.npy')
+# In[5]
 
-#Xia = np.load('npyData/07_07/set_ALL_X.npy')
-#yia = np.load('npyData/06_07/set_2D_1_256_3clase_Toate.npy')
 Xia = X_test
 yia = y_test
 
@@ -306,25 +249,20 @@ print(' \n   Classification report - test dataset : \n\n', classification_report
 
 
 
-#salvare model
-
 import pickle
 
-
-# filename = 'finalized_SVM_model_2classes.sav'
-# pickle.dump(model_svm, open(r'npyData/07_07/'+filename, 'wb'))
 
 print('Salvare imagini dupa clasa: ...')
 
 saveImgsCls = True # daca dorim sa salvam pache-urile dupa grupare KMeans
 if (saveImgsCls == True):
     # gruparea imaginilor dupa clasele alocate
-    path = firstPath+'SalivaImgsAnl/Clasif_Svm3/' # stocare locala
+    path = firstPath+'SalivaImgsAnl/Clasificare_Again/' # stocare locala
     folders = [] # definiere cate un folder pentru fiecare clasa
     for i in range(nrCls):
         folders.append("clasasvm"+ str(i))
     
-    # Daca directorul deja exista - se sterge si reface
+    Daca directorul deja exista - se sterge si reface
     import os
     if (os.path.isdir(path)):
         import shutil
@@ -340,8 +278,10 @@ if (saveImgsCls == True):
         dirname = path+'clasasvm'+str(y_ia_pred[i]) + '/' + str(i) + '.jpg'
         cv2.imwrite(dirname, Xia[i])
         
-                # claseVals.append(y_ia_pred[y_ia_pred==y_ia_pred[i]].shape)
-    # print(claseVals)
  
 print("--- %s seconds ---" % (time.time() - start_time))
+<<<<<<< Updated upstream
 
+=======
+      
+>>>>>>> Stashed changes
