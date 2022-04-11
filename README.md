@@ -26,7 +26,8 @@ In the bellow images you can see: (1) Original Image; (2) Binar image; (3) Frang
 ### Image Classificatuin using Support Vector Machine
 ## Results
 ### Training
-In the test part, the accuracy was really high, about 97%.
+In the test part, the accuracy was really high, about 97%.You can see in the confusion matrix below.
+
 ![samples3](images/img3.jpg)
 ### Testing
 In the test part, a smaller set was used. The accuracy resulted as 96% where 5 out of 114 images were predicted wrong.
