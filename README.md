@@ -33,5 +33,5 @@ In the test part, the accuracy was really high, about 97%.You can see in the con
 In the test part, a smaller set was used. The accuracy resulted as 96% where 5 out of 114 images were predicted wrong.
 ![samples4](images/img4.jpg)
 
-#Work in progress...
+# Work in progress...
 New approach!
